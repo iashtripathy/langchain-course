@@ -5,30 +5,17 @@ from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_ollama import ChatOllama
 from langchain_openai import ChatOpenAI
-from tavily import TavilyClient
-
+from langchain_tavily import TavilySearch
 
 
 load_dotenv()
-
-tavily = TavilyClient()
-
-@tool
-def search(query: str) -> str:
-    """
-    This is a tool that takes a query string as input and searches the internet.
-    It prints the query to the console and returns a hardcoded string indicating
-    that the weather in Tokyo is sunny.
-    """
-    print(f"Searching for: {query}")
-    return tavily.search(query=query)  # Replace with actual search logic if needed
 
 
 # Create LLM using Ollama
 llm = ChatOllama(model="qwen2.5:7b")  # Assuming llama2 model, adjust as needed
 
 # Define tools
-tools = [search]
+tools = [TavilySearch()]
 
 # Create the agent
 agent = create_agent(model=llm, tools=tools)
@@ -38,7 +25,7 @@ def main():
     print("Hello from langchain-course!")
     
     # Invoke the agent with the query
-    response = agent.invoke({"messages": [HumanMessage(content="what's the weather in Tokyo")]})
+    response = agent.invoke({"messages": [HumanMessage(content="search for 10 Firmware Engineer and Embedded engineer job openings In Hyderabad India with 2 to 3 years of experience using linkedin and return the linkedin links where I can click and apply.")]})
     print("Agent response:", response)
 
 
